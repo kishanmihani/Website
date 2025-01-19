@@ -3,6 +3,8 @@ import unilogo from '../../../assets/uniisphearlogo.png'
 import { Container,Card,CardBody,Form ,Button} from "react-bootstrap"
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
+import { authAxios } from "../../../access/access";
+import { problemdata } from "../../../data/Register/Register";
 type MyComponentProps = {
     handlerfun: () => void;  // Define handler as a function that returns void
     
@@ -54,7 +56,7 @@ const PreRegister:React.FC<MyComponentProps>=({handlerfun})=>{
       event.stopPropagation();
     }else{
       otherdetails()
-      setFormData({ name: '', email: '',Number:'',city:'' })
+      // setFormData({ name: '', email: '',Number:'',city:'' })
       event.stopPropagation();
     }
     event.stopPropagation();
@@ -67,20 +69,34 @@ const PreRegister:React.FC<MyComponentProps>=({handlerfun})=>{
       event.preventDefault();
       event.stopPropagation();
     }
-      if(formDatatwo.collage !=='' &&  formDatatwo.Degree !=='' && formDatatwo.Numberthree !=='' && formDatatwo.Numbertwo!=='' && formDatatwo.NumberOne !==''){
-        thankyou()
-        setFormDatatwo({ 
-           collage: '',
-          Degree: '',
-          NumberOne:'',
-          Numbertwo:'',
-          Numberthree:'', })
+      if(formDatatwo.collage !=='' &&  formDatatwo.Degree !==''  && formDatatwo.Numbertwo!=='' && formDatatwo.NumberOne !==''){
+        submitdata()
+       
       }
       
      
     event.stopPropagation();
     setValidatedtwo(true);
   };
+const submitdata =async () =>{
+   const obj={
+    name:formData.name,
+    email:formData.email,
+    phone_number:formData.Number,
+    city:formData.city,
+    college_university:formDatatwo.collage,
+    degree_course:formDatatwo.Degree,
+    problem_1:formDatatwo.NumberOne,
+    problem_2:formDatatwo.Numbertwo,
+    problem_3:formDatatwo.Numberthree
+   }
+  const response = await authAxios.post('/api/register',obj)
+                  .catch(err => console.log(err))
+   console.log(response,obj)
+   response?.status === 201 ? thankyou() : '';
+}
+  // authAxios.post('api/registrations',obj)
+  // .catch(err => console.log(err))
  return (
     <React.Fragment>
         <nav className='d-flex justify-content-between  container-fluid align-items-center place-content-center' style={{placeContent:'center'}}>
@@ -159,7 +175,7 @@ const PreRegister:React.FC<MyComponentProps>=({handlerfun})=>{
 
       <Form.Group className="mb-3" controlId="formBasicDegree">
         <Form.Label className="ps-4 mb-1">Degree/Course</Form.Label>
-        <Form.Control required type="email" className="rounded-5"name="Degree"
+        <Form.Control required type="text" className="rounded-5"name="Degree"
             value={formDatatwo.Degree}
             onChange={handleInputChangetwo}    />
         <Form.Control.Feedback type="invalid" className="ps-4 mb-1" >
@@ -175,15 +191,11 @@ const PreRegister:React.FC<MyComponentProps>=({handlerfun})=>{
             value={formDatatwo.NumberOne}
             onChange={handleInputChangetwo} >
               <option hidden></option>
-              <option>Struggle to connect with students from other <br />Universities for collaborations or opportunities ?</option>
-              <option>Find it difficult to track workshops and <br />seminars that match your interests ?</option>
-              <option>Difficulty to fing Part-Time freelacing<br /> opportunities</option>
-              <option>Want ot earn Part-Time without affecting your <br />studies ?</option>
-              <option>Do you feel unprepared for life after college,<br /> including job interviews and internships ?</option>
-              <option>Difficulties in monetizing your skills or hobbies ?</option>
-<option >Feel a lack of guidance from Seniors,Alumni or industry Professionals ?</option>
-              <option>Finding it difficult to learn new skills that can <br />help in your career ?</option>
-              <option>Struggling to build a professional network <br />that can help in your career ?</option>
+              {problemdata.map((data) =>{
+                return (
+                       <option key={data.id} value={data.text}>{data.text}</option>
+                )
+              })}
             </Form.Select>
         <Form.Control.Feedback type="invalid" className="ps-4 mb-1" >
             Please enter the Number 1
@@ -195,15 +207,11 @@ const PreRegister:React.FC<MyComponentProps>=({handlerfun})=>{
             value={formDatatwo.Numbertwo}
             onChange={handleInputChangetwo} >
               <option hidden></option>
-              <option>Struggle to connect with students from other <br />Universities for collaborations or opportunities ?</option>
-              <option>Find it difficult to track workshops and <br />seminars that match your interests ?</option>
-              <option>Difficulty to fing Part-Time freelacing<br /> opportunities</option>
-              <option>Want ot earn Part-Time without affecting your <br />studies ?</option>
-              <option>Do you feel unprepared for life after college,<br /> including job interviews and internships ?</option>
-              <option>Difficulties in monetizing your skills or hobbies ?</option>
-<option >Feel a lack of guidance from Seniors,Alumni or industry Professionals ?</option>
-              <option>Finding it difficult to learn new skills that can <br />help in your career ?</option>
-              <option>Struggling to build a professional network <br />that can help in your career ?</option>
+              {problemdata.map((data) =>{
+                return (
+                       <option key={data.id} value={data.text}>{data.text}</option>
+                )
+              })}
             </Form.Select>
         <Form.Control.Feedback type="invalid" className="ps-4 mb-1" >
             Please enter the Number 2
@@ -211,23 +219,17 @@ const PreRegister:React.FC<MyComponentProps>=({handlerfun})=>{
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicNumberthree">
         <Form.Label className="ps-4 mb-1">Number 3</Form.Label>
-        <Form.Select  required   className="rounded-5" name="Numberthree"
+        <Form.Select    className="rounded-5" name="Numberthree"
             value={formDatatwo.Numberthree}
             onChange={handleInputChangetwo} >
                <option hidden></option>
-              <option>Struggle to connect with students from other <br />Universities for collaborations or opportunities ?</option>
-              <option>Find it difficult to track workshops and <br />seminars that match your interests ?</option>
-              <option>Difficulty to fing Part-Time freelacing<br /> opportunities</option>
-              <option>Want ot earn Part-Time without affecting your <br />studies ?</option>
-              <option>Do you feel unprepared for life after college,<br /> including job interviews and internships ?</option>
-              <option>Difficulties in monetizing your skills or hobbies ?</option>
-<option >Feel a lack of guidance from Seniors,Alumni or industry Professionals ?</option>
-              <option>Finding it difficult to learn new skills that can <br />help in your career ?</option>
-              <option>Struggling to build a professional network <br />that can help in your career ?</option>
+               {problemdata.map((data) =>{
+                return (
+                       <option key={data.id} value={data.text}>{data.text}</option>
+                )
+              })}
             </Form.Select>
-        <Form.Control.Feedback type="invalid" className="ps-4 mb-1" >
-            Please enter the Number 3
-          </Form.Control.Feedback>
+        
       </Form.Group>
       <div className="text-center w-100">
       <Button variant="primary"  className="rounded-4 text-center m-auto" onClick={handleSubmittwo} type="button">
