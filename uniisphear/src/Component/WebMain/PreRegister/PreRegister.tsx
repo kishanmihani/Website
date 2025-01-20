@@ -69,7 +69,7 @@ const PreRegister:React.FC<MyComponentProps>=({handlerfun})=>{
       event.preventDefault();
       event.stopPropagation();
     }
-      if(formDatatwo.collage !=='' &&  formDatatwo.Degree !==''  && formDatatwo.Numbertwo!=='' && formDatatwo.NumberOne !==''){
+      if(formDatatwo.collage !=='' &&  formDatatwo.Degree !=='' && formDatatwo.Numberthree!=='' && formDatatwo.Numbertwo!=='' && formDatatwo.NumberOne !==''){
         submitdata()
        
       }
@@ -219,7 +219,7 @@ const submitdata =async () =>{
       </Form.Group>
       <Form.Group className="mb-3" controlId="formBasicNumberthree">
         <Form.Label className="ps-4 mb-1">Number 3</Form.Label>
-        <Form.Select    className="rounded-5" name="Numberthree"
+        <Form.Select  required  className="rounded-5" name="Numberthree"
             value={formDatatwo.Numberthree}
             onChange={handleInputChangetwo} >
                <option hidden></option>
@@ -229,7 +229,9 @@ const submitdata =async () =>{
                 )
               })}
             </Form.Select>
-        
+            <Form.Control.Feedback type="invalid" className="ps-4 mb-1" >
+            Please enter the Number 3
+          </Form.Control.Feedback>
       </Form.Group>
       <div className="text-center w-100">
       <Button variant="primary"  className="rounded-4 text-center m-auto" onClick={handleSubmittwo} type="button">
