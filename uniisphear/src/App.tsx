@@ -10,7 +10,7 @@ import Eduwal from './Component/WebMain/SomeCommer/Eduwal'
 import OverAll from './Component/WebMain/OverAll/Overall'
 import PreRegister from './Component/WebMain/PreRegister/PreRegister'
 import Footer from './Component/WebMain/Footer/Footer'
-// import 
+import 'react-toastify/dist/ReactToastify.css'; 
 
 function App() {
   const [Register, setRegister] = useState(false)
